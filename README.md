@@ -22,37 +22,37 @@ Jawab:
 
 Berikut adalah daftar widget tersebut beserta fungsinya:
 
-    1. `MaterialApp`: Ini adalah widget di tingkat paling atas yang menyelubungi seluruh aplikasi Flutter dan menyediakan banyak fungsi penting seperti theming, navigasi, dan orientasi.
-
-    2. `Scaffold`: Widget ini menyediakan kerangka dasar untuk tata letak halaman di aplikasi material. Ini memberikan struktur untuk app bar, body, floating buttons, dan drawers.
-
-    3. `AppBar`: Ini adalah widget yang biasanya ditampilkan di bagian atas `Scaffold` dan biasanya menampilkan judul, leading, dan actions. Dalam kode Anda, Anda juga menggunakan `ShaderMask` di judul untuk memberikan efek gradien.
-
-    4. `ShaderMask`: Widget ini digunakan untuk menerapkan efek gradien pada child widget-nya dengan menggunakan shader yang dihasilkan dari `LinearGradient`.
-
-    5. `Text`: Menampilkan string teks dengan gaya yang bisa disesuaikan.
-
-    6. `SingleChildScrollView`: Widget ini menyediakan kemampuan scroll pada kontennya, yang berguna jika konten melebihi layar.
-
-    7. `Padding`: Widget ini digunakan untuk memberi padding di sekeliling widget anaknya, yaitu memberikan ruang kosong di sekelilingnya.
-
-    8. `Column`: Widget ini mengatur anak-anaknya secara vertikal. Dalam kode Anda, `Column` ini digunakan untuk menyusun teks dan grid secara vertikal di dalam `Padding`.
-
-    9. `GridView`: Widget ini menyediakan grid yang bisa di-scroll. Dalam kasus Anda, Anda menggunakan `GridView.count` untuk membuat grid dengan jumlah kolom yang tetap.
-
-    10. `Card`: Widget ini menyediakan material card dengan sudut yang membulat dan bayangan, memberikan efek elevasi.
-
-    11. `InkWell`: Widget yang menanggapi sentuhan dengan efek ripple. Dalam kode Anda, ini digunakan untuk mendeteksi tap pada kartu dan menampilkan `SnackBar`.
-
-    12. `Container`: Widget ini digunakan untuk mendekorasi, mengubah ukuran, atau memberikan margin atau padding pada child-nya. Dalam kasus ini, digunakan untuk menerapkan gradien pada background dari card.
-
-    13. `Icon`: Widget ini menampilkan ikon dari font yang diberikan, dalam hal ini, ikon dari Material Icons.
-
-    14. `SnackBar`: Widget yang muncul dari bawah layar untuk memberikan pesan singkat kepada pengguna. Ini digunakan di sini untuk memberikan feedback ketika kartu ditekan.
-
-    15. `LinearGradient`: Ini bukan widget tetapi merupakan properti yang biasanya digunakan bersama dengan widget seperti `Container` atau `DecoratedBox` untuk memberikan efek gradien.
-
-    16. `ScaffoldMessenger`: Widget yang digunakan untuk menampilkan `SnackBar`, dan dalam kasus ini, memberikan umpan balik ke pengguna.
+    - `MaterialApp`: Ini adalah widget di tingkat paling atas yang menyelubungi seluruh aplikasi Flutter dan menyediakan banyak fungsi penting seperti theming, navigasi, dan orientasi.
+    
+    - `Scaffold`: Widget ini menyediakan kerangka dasar untuk tata letak halaman di aplikasi material. Ini memberikan struktur untuk app bar, body, floating buttons, dan drawers.
+    
+    - `AppBar`: Ini adalah widget yang biasanya ditampilkan di bagian atas `Scaffold` dan biasanya menampilkan judul, leading, dan actions. Dalam kode Anda, Anda juga menggunakan `ShaderMask` di judul untuk memberikan efek gradien.
+    
+    - `ShaderMask`: Widget ini digunakan untuk menerapkan efek gradien pada child widget-nya dengan menggunakan shader yang dihasilkan dari `LinearGradient`.
+    
+    - `Text`: Menampilkan string teks dengan gaya yang bisa disesuaikan.
+    
+    - `SingleChildScrollView`: Widget ini menyediakan kemampuan scroll pada kontennya, yang berguna jika konten melebihi layar.
+    
+    - `Padding`: Widget ini digunakan untuk memberi padding di sekeliling widget anaknya, yaitu memberikan ruang kosong di sekelilingnya.
+    
+    - `Column`: Widget ini mengatur anak-anaknya secara vertikal. Dalam kode Anda, `Column` ini digunakan untuk menyusun teks dan grid secara vertikal di dalam `Padding`.
+    
+    - `GridView`: Widget ini menyediakan grid yang bisa di-scroll. Dalam kasus Anda, Anda menggunakan `GridView.count` untuk membuat grid dengan jumlah kolom yang tetap.
+    
+    - `Card`: Widget ini menyediakan material card dengan sudut yang membulat dan bayangan, memberikan efek elevasi.
+    
+    - `InkWell`: Widget yang menanggapi sentuhan dengan efek ripple. Dalam kode Anda, ini digunakan untuk mendeteksi tap pada kartu dan menampilkan `SnackBar`.
+    
+    - `Container`: Widget ini digunakan untuk mendekorasi, mengubah ukuran, atau memberikan margin atau padding pada child-nya. Dalam kasus ini, digunakan untuk menerapkan gradien pada background dari card.
+    
+    - `Icon`: Widget ini menampilkan ikon dari font yang diberikan, dalam hal ini, ikon dari Material Icons.
+    
+    - `SnackBar`: Widget yang muncul dari bawah layar untuk memberikan pesan singkat kepada pengguna. Ini digunakan di sini untuk memberikan feedback ketika kartu ditekan.
+    
+    - `LinearGradient`: Ini bukan widget tetapi merupakan properti yang biasanya digunakan bersama dengan widget seperti `Container` atau `DecoratedBox` untuk memberikan efek gradien.
+    
+    - `ScaffoldMessenger`: Widget yang digunakan untuk menampilkan `SnackBar`, dan dalam kasus ini, memberikan umpan balik ke pengguna.
 
 
 1. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)
