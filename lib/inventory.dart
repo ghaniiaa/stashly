@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stashly/widgets/left_drawer.dart';
+import 'package:stashly/inventorylist_form.dart';
 
 class MyHomePage extends StatelessWidget {
     MyHomePage({Key? key}) : super(key: key);
@@ -31,6 +33,7 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Colors.black, // Set AppBar background color to black
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -93,6 +96,13 @@ class InventoryCard extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
                 content: Text("Kamu telah menekan tombol ${item.name}!")));
+
+          if (item.name == "Tambah Item") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => InventoryFormPage()),
+            );
+          }
         },
         child: Container(
           decoration: BoxDecoration(
