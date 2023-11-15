@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:stashly/widgets/left_drawer.dart';
-
-// TODO: Impor drawer yang sudah dibuat sebelumnya
+import 'package:stashly/product.dart';
 
 class InventoryFormPage extends StatefulWidget {
-    const InventoryFormPage({super.key});
+  final Function(Product) onProductAdded; 
 
-    @override
-    State<InventoryFormPage> createState() => _InventoryFormPageState();
+  const InventoryFormPage({super.key, required this.onProductAdded});
+
+  @override
+  State<InventoryFormPage> createState() => _InventoryFormPageState();
 }
+
 
 class _InventoryFormPageState extends State<InventoryFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _name = "";
   int _price = 0;
   String _description = "";
+
+  void _saveProduct() {
+    if (_formKey.currentState!.validate()) {
+      final newProduct = Product(_name, _price, _description);
+      widget.onProductAdded(newProduct); // Memanggil callback
+      Navigator.pop(context); // Menutup form setelah produk ditambahkan
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -118,6 +129,7 @@ class _InventoryFormPageState extends State<InventoryFormPage> {
                             MaterialStateProperty.all(Colors.indigo),
                       ),
                       onPressed: () {
+                        _saveProduct();
                         if (_formKey.currentState!.validate()) {
                           showDialog(
                             context: context,
