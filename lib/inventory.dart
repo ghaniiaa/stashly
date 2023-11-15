@@ -119,18 +119,18 @@ class InventoryCard extends StatelessWidget {
 
           if (item.name == "Tambah Item") {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => InventoryFormPage(
-                    onProductAdded: (product) {
-                      onProductAdded(product); // Use the callback here
-                      Navigator.pop(context); // Go back after adding
-                    },
-                  ),
+              context,
+              MaterialPageRoute(
+                builder: (context) => InventoryFormPage(
+                  onProductAdded: (product) {
+                    onProductAdded(product);
+                    Navigator.pop(context); // Kembali ke halaman sebelumnya setelah menambahkan produk
+                  },
                 ),
-              );
+              ),
+            );
           }
-           
+
           if (item.name == "Lihat Item") {
             Navigator.push(
               context,

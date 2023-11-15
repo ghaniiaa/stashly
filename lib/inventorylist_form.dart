@@ -21,8 +21,8 @@ class _InventoryFormPageState extends State<InventoryFormPage> {
   void _saveProduct() {
     if (_formKey.currentState!.validate()) {
       final newProduct = Product(_name, _price, _description);
-      widget.onProductAdded(newProduct); // Memanggil callback
-      Navigator.pop(context); // Menutup form setelah produk ditambahkan
+      widget.onProductAdded(newProduct); // Menambahkan produk
+      Navigator.pop(context); // Menutup InventoryFormPage setelah menambahkan produk
     }
   }
 

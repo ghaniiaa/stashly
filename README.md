@@ -2,7 +2,7 @@ Ghania Larasati Nurjayadi Putri
 
 2206083003
 
-Tugas 7: Elemen Dasar Flutter
+# Tugas 7: Elemen Dasar Flutter
 
 1. Apa perbedaan utama antara stateless dan stateful widget dalam konteks pengembangan aplikasi Flutter?
 
@@ -132,3 +132,235 @@ flutter create stashly
     ```
 
     InventoryCard adalah sebuah StatelessWidget yang merepresentasikan kartu inventaris dalam UI. Ini menggunakan data dari InventoryItem untuk membangun tampilan kartu dengan Card widget, yang di dalamnya ada InkWell untuk menangani ketukan, dan menampilkan ikon serta teks. Setiap InventoryCard merupakan representasi visual dari InventoryItem dengan style yang sesuai.
+
+
+# Tugas 8
+
+### 1. Perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()`
+
+- **`Navigator.push()`**:
+ 
+  - Fungsi ini digunakan untuk menavigasi ke halaman baru tanpa menghapus halaman sebelumnya dari stack navigasi.
+ 
+  - Halaman yang dituju ditambahkan ke atas stack, dan pengguna dapat kembali ke halaman sebelumnya dengan menggunakan tombol back atau gestur navigasi.
+ 
+  - **Contoh Penggunaan**: Misalnya, dalam aplikasi e-commerce, saat pengguna memilih produk dan kemudian menekan tombol untuk melihat detail produk, Anda akan menggunakan `Navigator.push()` untuk membawa mereka ke halaman detail produk. Pengguna dapat kembali ke halaman daftar produk dengan menekan tombol back.
+
+- **`Navigator.pushReplacement()`**:
+  
+  - Metode ini digunakan untuk menavigasi ke halaman baru dengan mengganti (menghapus) halaman saat ini dari stack navigasi.
+ 
+  - Halaman lama dihapus, dan pengguna tidak dapat kembali ke halaman tersebut dengan tombol back.
+ 
+  - **Contoh Penggunaan**: Ini berguna dalam kasus seperti proses login. Setelah pengguna berhasil login, Anda mungkin ingin membawa mereka ke halaman beranda dan menghapus halaman login dari stack sehingga mereka tidak kembali ke halaman login saat menekan tombol back.
+
+### 2. Layout Widgets pada Flutter
+
+- **`Column` dan `Row`**:
+ 
+  - `Column` mengatur child widgets secara vertikal, dan `Row` mengatur child widgets secara horizontal.
+  
+  - **Konteks Penggunaan**: Digunakan saat Anda ingin menampilkan elemen dalam orientasi vertikal atau horizontal, seperti daftar item atau tombol dalam satu baris.
+
+- **`Stack`**:
+ 
+  - Memungkinkan widgets ditumpuk di atas satu sama lain.
+ 
+  - **Konteks Penggunaan**: Berguna untuk overlay widgets, seperti menempatkan teks di atas gambar atau membuat efek tertentu yang membutuhkan penumpukan elemen.
+
+- **`Container`**:
+ 
+  - Widget yang memungkinkan penyesuaian dekorasi, padding, margin, dan banyak lagi.
+ 
+  - **Konteks Penggunaan**: Digunakan hampir di mana saja untuk menambahkan spasi, dekorasi, atau untuk mengontrol ukuran dan posisi widget lain.
+
+- **`Flex` dan `Expanded`**:
+  
+  - `Flex` memungkinkan layout yang lebih kompleks dengan menggunakan konsep flexbox, dan `Expanded` mengisi ruang yang tersedia.
+ 
+  - **Konteks Penggunaan**: Ketika Anda ingin child widgets memiliki proporsi ukuran yang spesifik atau ingin memanfaatkan ruang yang tersedia secara efisien.
+
+### 3. Elemen Input pada Form
+
+Dalam contoh kode Anda:
+
+- **`TextFormField`**:
+  
+  - Digunakan untuk memasukkan teks, seperti nama produk, harga, dan deskripsi.
+  
+  - **Alasan Penggunaan**: Memberikan input teks yang mudah bagi pengguna dan mendukung validasi input, yang penting untuk memastikan bahwa data yang masuk valid dan lengkap.
+
+### 4. Penerapan Clean Architecture pada Aplikasi Flutter
+
+Clean Architecture adalah konsep arsitektur perangkat lunak yang memisahkan kekhawatiran kode menjadi lapisan yang berbeda:
+
+- **Lapisan Presentasi**:
+ 
+  - Menangani UI dan logika tampilan. Di Flutter, ini termasuk widgets dan state management.
+  
+  - **Implementasi**: Gunakan `Provider`, `Bloc`, atau `Riverpod` untuk mengelola state.
+
+- **Lapisan Bisnis**:
+  
+  - Berisi logika bisnis aplikasi. Ini independen dari framework.
+ 
+  - **Implementasi**: Buat class dan fungsi yang mengelola logika aplikasi, seperti pengelolaan data pengguna, pengelolaan produk, dll.
+
+- **Lapisan Data**:
+ 
+  - Menangani operasi data seperti panggilan API, operasi database, dan penyimpanan lokal.
+ 
+  - **Implementasi**: Gunakan package seperti `http`, `sqflite`, atau `shared_preferences` untuk implementasi lapisan data.
+
+- **Abstraksi**:
+
+  - Menggunakan abstraksi untuk memastikan lapisan tidak bergantung langsung satu sama lain, tetapi berkomunikasi melalui interfaces atau abstraksi.
+
+  - **Implementasi**: Tentukan interfaces atau contracts yang harus diikuti oleh setiap lapisan.
+
+Mengadopsi Clean Architecture membantu dalam memelihara dan menguji kode, serta memudahkan dalam proses pengembangan karena setiap lapisan dapat dikembangkan dan diuji secara independen.
+
+### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step!
+
+Berikut adalah ringkasan langkah demi langkah dari tutorial yang Anda minta, disesuaikan dengan kode dan konteks aplikasi Flutter Anda:
+
+### Tutorial: Menambahkan Drawer Menu Untuk Navigasi
+
+**Langkah 1: Membuat Berkas `left_drawer.dart`**
+
+1. Buat file baru dengan nama `left_drawer.dart` di direktori `widgets`.
+
+2. Tambahkan kode berikut ke dalam `left_drawer.dart`:
+
+   ```dart
+   import 'package:flutter/material.dart';
+   import 'package:stashly/inventory.dart'; // Sesuaikan dengan struktur project Anda
+   import 'package:stashly/product_list_page.dart'; // Sesuaikan dengan struktur project Anda
+
+   class LeftDrawer extends StatelessWidget {
+     final List<Product> products;
+     final Function(Product) onProductAdded;
+
+     const LeftDrawer({Key? key, required this.products, required this.onProductAdded}) : super(key: key);
+
+     @override
+     Widget build(BuildContext context) {
+       return Drawer(
+         child: ListView(
+           children: [
+             const DrawerHeader(
+               // Kustomisasi header drawer
+             ),
+             ListTile(
+               leading: const Icon(Icons.home_outlined),
+               title: const Text('Halaman Utama'),
+               onTap: () {
+                 Navigator.pushReplacement(
+                     context,
+                     MaterialPageRoute(
+                       builder: (context) => MyHomePage(),
+                     ));
+               },
+             ),
+             ListTile(
+               leading: const Icon(Icons.add_shopping_cart),
+               title: const Text('Tambah Item'),
+               onTap: () {
+                 // Routing ke halaman form produk
+               },
+             ),
+             // Tambahkan lebih banyak ListTile jika diperlukan
+           ],
+         ),
+       );
+     }
+   }
+   ```
+
+**Langkah 2: Menambahkan Drawer ke `MyHomePage`**
+
+1. Impor `left_drawer.dart` di file `inventory.dart` dimana `MyHomePage` didefinisikan.
+
+2. Tambahkan `LeftDrawer` sebagai drawer di `Scaffold` di `MyHomePage`:
+
+   ```dart
+   @override
+   Widget build(BuildContext context) {
+     return Scaffold(
+       appBar: AppBar(
+         title: Text('Stashly'),
+       ),
+       drawer: LeftDrawer(products: _products, onProductAdded: _addNewProduct),
+       // Sisa dari body Scaffold
+     );
+   }
+   ```
+
+### Tutorial: Menambahkan Form dan Elemen Input
+
+**Langkah 1: Membuat `InventoryFormPage`**
+
+1. Buat file baru `inventorylist_form.dart` di direktori `lib`.
+
+2. Tambahkan struktur dasar `StatefulWidget` dengan `Scaffold` di dalamnya, termasuk AppBar dan body `Form`.
+
+   ```dart
+   class InventoryFormPage extends StatefulWidget {
+     final Function(Product) onProductAdded; 
+
+     const InventoryFormPage({super.key, required this.onProductAdded});
+
+     @override
+     State<InventoryFormPage> createState() => _InventoryFormPageState();
+   }
+
+   class _InventoryFormPageState extends State<InventoryFormPage> {
+     final _formKey = GlobalKey<FormState>();
+     String _name = "";
+     int _price = 0;
+     String _description = "";
+
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text('Tambah Produk'),
+         ),
+         body: Form(
+           key: _formKey,
+           child: SingleChildScrollView(
+             child: Column(
+               // Tambahkan TextFormField dan tombol simpan di sini
+             ),
+           ),
+         ),
+       );
+     }
+   }
+   ```
+
+**Langkah 2: Menambahkan Field dan Tombol pada Form**
+
+1. Di dalam `Column` di body `Form`, tambahkan `TextFormField` untuk nama produk, harga, dan deskripsi.
+
+2. Tambahkan tombol `ElevatedButton` untuk menyimpan produk.
+
+   ```dart
+   Padding(
+     padding: EdgeInsets.all(8.0),
+     child: TextFormField(
+       // Konfigurasi untuk nama, harga, dan deskripsi
+     ),
+   ),
+   // Tombol simpan
+   ```
+
+**Langkah 3: Menampilkan Pop-up Saat Produk Disimpan**
+
+1. Di dalam `onPressed` dari tombol simpan, tambahkan `showDialog` dengan `AlertDialog` untuk menampilkan informasi produk yang disimpan.
+
+**Langkah 4: Menambahkan Navigasi pada Tombol**
+
+1. Pada `onTap` dari setiap `InkWell` atau `ListTile` di `LeftDrawer`, tambahkan `Navigator.push` atau `Navigator.pushReplacement` untuk navigasi ke halaman yang sesuai.
+
+2. Pastikan `Navigator.push` digunakan untuk navigasi ke `InventoryFormPage` sehingga pengguna dapat kembali ke halaman sebelumnya.
