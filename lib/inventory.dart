@@ -1,167 +1,132 @@
 import 'package:flutter/material.dart';
-import 'package:stashly/widgets/left_drawer.dart';
-import 'package:stashly/inventorylist_form.dart';
-import 'package:stashly/product.dart'; // Import Product model
-import 'package:stashly/product_list_page.dart'; // Import ProductListPage
+import 'package:stashly/product.dart';
+import 'package:stashly/product_service.dart';
+import 'package:stashly/form_inventory.dart';
+import 'package:stashly/list_item.dart';
+import 'package:stashly/left_drawer.dart';
+import 'package:stashly/login.dart';
 
-class MyHomePage extends StatefulWidget {
+class InventoryPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _InventoryPageState createState() => _InventoryPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final List<Product> _products = []; // List of products
-
-  final List<InventoryItem> items = [
-    InventoryItem("Lihat Item", Icons.checklist, [Colors.blue, Colors.blueAccent]),
-    InventoryItem("Tambah Item", Icons.add_shopping_cart, [Colors.green, Colors.teal]),
-    InventoryItem("Logout", Icons.logout, [Colors.redAccent, Colors.red]), 
-  ];
-
- void _addNewProduct(Product product) {
-    setState(() {
-      _products.add(product);
-      print("Produk ditambahkan: ${product.name}");
-    });
-  }
-
+class _InventoryPageState extends State<InventoryPage> {
+  final ProductService productService = ProductService();
+  late List<Product> products;
+  bool isLoading = true;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        title: ShaderMask(
-          shaderCallback: (Rect bounds) {
-            return LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.purple, Colors.blueAccent],
-            ).createShader(bounds);
-          },
-          blendMode: BlendMode.srcIn,
-          child: const Text(
-            'Stashly',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.black,
-      ),
-      drawer: LeftDrawer(
-        products: _products, 
-        onProductAdded: _addNewProduct,), // Updated to pass products
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                child: Text(
-                  'Less clutter, more clarity. Welcome to Stashly.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              GridView.count(
-                primary: false,
-                padding: const EdgeInsets.all(20),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                children: items.map((InventoryItem item) {
-                  return InventoryCard(item, onProductAdded: _addNewProduct, products: _products);
-                }).toList(),
-              ),
-            ],
-          ),
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  void _loadProducts() async {
+    try {
+      products = await productService.getProducts();
+    } catch (e) {
+      print('Error fetching products: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void _navigateToAddProduct() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FormInventory(
+          onProductSaved: _loadProducts,
         ),
       ),
     );
   }
-}
 
-class InventoryItem {
-  final String name;
-  final IconData icon;
-  final List<Color> colors;
+  void _navigateToListItem() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ListItemPage(products: products)),
+    );
+  }
 
-  InventoryItem(this.name, this.icon, this.colors);
-}
-
-class InventoryCard extends StatelessWidget {
-  final InventoryItem item;
-  final List<Product> products;  // Tambahkan ini
-  final Function(Product) onProductAdded;
-
-  InventoryCard(this.item, {Key? key, required this.onProductAdded, required this.products}) : super(key: key);
+  void _logout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Stashly Inventory',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: [
+              Shadow(
+                blurRadius: 10.0,
+                color: Colors.black.withOpacity(0.5),
+                offset: Offset(1.0, 1.0),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.deepPurple,
       ),
-      elevation: 5,
-      child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-                content: Text("Kamu telah menekan tombol ${item.name}!")));
-
-          if (item.name == "Tambah Item") {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => InventoryFormPage(
-                  onProductAdded: (product) {
-                    onProductAdded(product);
-                    Navigator.pop(context); // Kembali ke halaman sebelumnya setelah menambahkan produk
-                  },
+      drawer: LeftDrawer(),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.deepPurple[50]!, Colors.purple[100]!],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
               ),
-            );
-          }
-
-          if (item.name == "Lihat Item") {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProductListPage(products: products)),
-            );
-          }
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: item.colors,
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _buildCard(Icons.add, 'Tambah Item', _navigateToAddProduct, Colors.blue),
+                  _buildCard(Icons.view_list, 'Lihat Item', _navigateToListItem, Colors.green),
+                  _buildCard(Icons.logout, 'Logout', _logout, Colors.redAccent),
+                ],
+              ),
             ),
+    );
+  }
+
+  Widget _buildCard(IconData icon, String title, VoidCallback onTap, Color color) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Card(
+          elevation: 4.0,
+          shadowColor: Colors.black.withOpacity(0.5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.all(8),
-          child: Center(
+          child: Container(
+            padding: EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
+                Icon(icon, size: 40, color: color),
+                SizedBox(height: 8),
                 Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
                 ),
               ],
             ),

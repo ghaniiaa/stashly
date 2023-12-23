@@ -364,3 +364,77 @@ Berikut adalah ringkasan langkah demi langkah dari tutorial yang Anda minta, dis
 1. Pada `onTap` dari setiap `InkWell` atau `ListTile` di `LeftDrawer`, tambahkan `Navigator.push` atau `Navigator.pushReplacement` untuk navigasi ke halaman yang sesuai.
 
 2. Pastikan `Navigator.push` digunakan untuk navigasi ke `InventoryFormPage` sehingga pengguna dapat kembali ke halaman sebelumnya.
+
+
+# Tugas 9
+
+## 1. Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+
+**Pengambilan Data JSON Tanpa Model vs. Dengan Model:**
+
+   - **Tanpa Model:**
+
+     - **Ketika Digunakan:** Metode ini lebih sesuai untuk proyek-proyek dengan skala kecil atau saat data JSON yang diterima bersifat sementara dan tidak memerlukan penyimpanan atau manipulasi kompleks.
+
+     - **Proses:** Data JSON diambil dan diparsing secara langsung menggunakan fungsi seperti `json.decode` di Dart. Ini menghasilkan struktur data dasar seperti Map atau List.
+
+     - **Kelebihan:** Memberikan kemudahan dalam mengelola data yang dinamis dan cepat berubah. Ideal untuk prototyping cepat.
+
+     - **Kekurangan:** Kode bisa menjadi lebih sulit untuk dijaga, khususnya saat aplikasi berkembang. Menambahkan atau mengubah data bisa menjadi rumit dan rawan kesalahan tanpa struktur yang jelas.
+
+   - **Dengan Model:**
+
+     - **Ketika Digunakan:** Lebih cocok untuk aplikasi yang lebih besar dan kompleks, di mana struktur data perlu dijaga secara konsisten.
+
+     - **Proses:** Data JSON dipetakan ke model Dart yang telah didefinisikan, di mana setiap model memiliki struktur yang jelas dan metode untuk memproses data tersebut.
+
+     - **Kelebihan:** Meningkatkan kejelasan kode dan memudahkan manajemen dan pemeliharaan data. Validasi dan manipulasi data menjadi lebih mudah dan terstruktur.
+
+     - **Kekurangan:** Membutuhkan waktu awal yang lebih lama untuk mendefinisikan model dan mungkin overkill untuk proyek kecil atau data yang sangat sederhana.
+
+## 2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+**Fungsi CookieRequest di Flutter:**
+
+   - **Manajemen State Sesi:** `CookieRequest` digunakan untuk mengelola cookie, yang sangat penting dalam aplikasi web dan mobile untuk mempertahankan state sesi pengguna. Ini memungkinkan aplikasi untuk mengingat informasi tentang pengguna, seperti preferensi atau status login.
+
+   - **Keamanan dan Privasi:** Menggunakan `CookieRequest` dengan benar membantu menjaga keamanan informasi pengguna dan memastikan bahwa data sensitif seperti token autentikasi dijaga dengan aman.
+
+   - **Konsistensi Pengalaman Pengguna:** Dengan membagikan instance `CookieRequest` di seluruh komponen, setiap bagian dari aplikasi dapat memberikan pengalaman yang konsisten kepada pengguna, mempertahankan informasi yang relevan di antara berbagai halaman atau sesi.
+
+## 3. Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+
+**Mekanisme Pengambilan Data dari JSON di Flutter:**
+
+   - **Tahap-tahap Proses:**
+
+     - **Pengambilan:** Aplikasi Flutter mengirimkan permintaan ke sumber data eksternal, yang biasanya merupakan API web yang mengembalikan data dalam format JSON.
+
+     - **Pengolahan:** Data JSON yang diterima kemudian diproses. Proses ini melibatkan pengubahan string JSON menjadi struktur data yang lebih mudah diolah di Dart, seperti Map atau List.
+
+     - **Integrasi dengan UI:** Setelah data diproses, ia digunakan untuk membangun UI. Ini bisa berarti mengisi `ListView` dengan data, menampilkan informasi dalam `Text` widget, atau menggunakannya dalam berbagai bentuk lain tergantung pada kebutuhan aplikasi.
+
+## 4. Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+**Mekanisme Autentikasi Flutter ke Django:**
+
+   - **Langkah-Langkah Proses:**
+
+     - **Input Pengguna:** Pengguna memasukkan data autentikasi (seperti username dan password) dalam form di aplikasi Flutter.
+
+     - **Komunikasi dengan Server Django:** Data ini kemudian dikirimkan ke server Django, biasanya melalui HTTP POST request.
+
+     - **Verifikasi oleh Django:** Server Django menerima data, melakukan proses verifikasi dengan membandingkannya dengan informasi yang ada di database, dan mengonfirmasi keaslian pengguna.
+
+     - **Feedback ke Flutter:** Setelah verifikasi berhasil, Django mengirimkan respons yang sesuai kembali ke aplikasi Flutter, yang kemudian dapat menampilkan menu utama atau halaman selanjutnya berdasarkan status autentikasi.
+
+## 5. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+
+ **Contoh Widget dan Fungsinya:**
+
+  - `Scaffold`: Menyediakan kerangka dasar untuk tata letak aplikasi, termasuk AppBar, Drawer, dan BottomNavigationBar.
+
+  - `ListView`: Widget yang digunakan untuk membuat daftar item yang dapat digulir. Sangat berguna untuk menampilkan daftar data dinamis.
+  
+  - `TextFormField`: Memungkinkan pengguna memasukkan teks. Biasa digunakan dalam form untuk memungkinkan input dari pengguna.
+    
